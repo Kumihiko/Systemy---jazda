@@ -23,7 +23,6 @@ $stmt = $pdo->query($query);
             </div>
             <nav>
                 <a href="index.php" class="btn">Strona Główna</a>
-                <a href="add_participant.php" class="btn">Dodaj Kursanta</a>
             </nav>
         </header>
         
@@ -51,7 +50,7 @@ $stmt = $pdo->query($query);
                         ?>
                     </tbody>
                 </table>
-                <a href="index.php" class="btn-instruktorzy">Powrót do Strony Głównej</a>
+               
             </section>
         </main>
 

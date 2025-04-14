@@ -30,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <nav>
                 <a href="admin_panel.php" class="btn">Panel Administratora</a>
                 <a href="theory_lessons.php" class="btn">Zajęcia Teoretyczne</a>
+                <a href="Instruktorzy.php" class="btn">Instruktorzy</a>
             </nav>
         </header>
 
