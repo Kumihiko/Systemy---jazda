@@ -1,12 +1,11 @@
 <?php
-include 'db_connect.php'; // Połączenie z bazą danych
+include 'db_connect.php'; // Połączenie z bazą
 
-// Pobieranie danych z tabeli Lekcje_Teoretyczne
-$query = "SELECT * FROM Lekcje_Teoretyczne ORDER BY Data";
+// Pobieranie danych z tabeli Lekcje Teoretyczne oraz Instruktorów
+$query = "SELECT lekcje_teoretyczne.*, Instruktorzy.Imie, Instruktorzy.Nazwisko 
+          FROM lekcje_teoretyczne 
+          LEFT JOIN Instruktorzy ON lekcje_teoretyczne.ID_Instruktora = Instruktorzy.ID_Instruktora";
 $stmt = $pdo->query($query);
-
-// Sprawdzanie czy zapytanie zwróciło jakiekolwiek dane
-$lekcje = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -14,14 +13,14 @@ $lekcje = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>Zajęcia Teoretyczne - Szkoła Jazdy</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link do pliku CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
             <div class="logo">
                 <img src="car_logo.png" alt="Logo Szkoły Jazdy" class="logo-img">
-                <h1>Szkoła Jazdy - Zajęcia Teoretyczne</h1>
+                <h1>Szkoła Jazdy - Bezpieczna Przyszłość</h1>
             </div>
             <nav>
                 <a href="index.php" class="btn">Strona Główna</a>
@@ -29,30 +28,32 @@ $lekcje = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </header>
 
         <main>
-            <section class="lekcje">
+            <section class="theory-lessons">
                 <h2>Zajęcia Teoretyczne</h2>
-                <?php if (count($lekcje) > 0): ?>
-                    <table class="table">
-                        <thead>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID Lekcji</th>
+                            <th>Imię Instruktora</th>
+                            <th>Nazwisko Instruktora</th>
+                            <th>Sala</th>
+                            <th>Data</th>
+                            <th>Godzina</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
                             <tr>
-                                <th>Data</th>
-                                <th>Godzina</th>
-                                <th>Sala</th>
+                                <td><?= $row['ID_Lekcji'] ?></td>
+                                <td><?= $row['Imie'] ?></td>
+                                <td><?= $row['Nazwisko'] ?></td>
+                                <td><?= $row['Sala'] ?></td>
+                                <td><?= $row['Data'] ?></td>
+                                <td><?= $row['Godzina'] ?></td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($lekcje as $lekcja): ?>
-                                <tr>
-                                    <td><?php echo $lekcja['Data']; ?></td>
-                                    <td><?php echo $lekcja['Godzina']; ?></td>
-                                    <td><?php echo $lekcja['Sala']; ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php else: ?>
-                    <p>Brak zajęć teoretycznych w bazie.</p>
-                <?php endif; ?>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
             </section>
         </main>
 

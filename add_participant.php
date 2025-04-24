@@ -1,19 +1,21 @@
 <?php
-include 'db_connect.php'; // Połączenie z bazą
+include 'db_connect.php'; // Połączenie z bazą danych
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+// Sprawdzenie, czy formularz został wysłany
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['imie']) && isset($_POST['nazwisko']) && isset($_POST['kategoria'])) {
+    // Pobieranie danych z formularza
     $imie = $_POST['imie'];
     $nazwisko = $_POST['nazwisko'];
+    $kategoria = $_POST['kategoria'];
 
-    // Dodanie kursanta do bazy
-    $query = "INSERT INTO Kursanci (Imie, Nazwisko) VALUES (:imie, :nazwisko)";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':imie', $imie);
-    $stmt->bindParam(':nazwisko', $nazwisko);
-    $stmt->execute();
+    // Dodanie kursanta do bazy danych
+    $insertQuery = "INSERT INTO Kursanci (Imie, Nazwisko, Kategoria) VALUES (?, ?, ?)";
+    $stmt = $pdo->prepare($insertQuery);
+    $stmt->execute([$imie, $nazwisko, $kategoria]);
 
-    echo "Kursant dodany pomyślnie!";
-    header('Location: index.php'); // Przekierowanie na stronę główną
+    // Przekierowanie na stronę główną po zapisaniu
+    header('Location: index.php');
+    exit();
 }
 ?>
 
@@ -21,26 +23,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Dodaj Kursanta</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link do pliku CSS -->
+    <title>Rejestracja Kursanta</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Dodaj Kursanta</h1>
+            <div class="logo">
+                <img src="car_logo.png" alt="Logo Szkoły Jazdy" class="logo-img">
+                <h1>Rejestracja Kursanta</h1>
+            </div>
+            <nav>
+                <a href="index.php" class="btn">Strona Główna</a>
+            </nav>
         </header>
-        
+
         <main>
-            <form method="POST" class="form">
-                <label for="imie">Imię: </label>
-                <input type="text" id="imie" name="imie" required><br><br>
-
-                <label for="nazwisko">Nazwisko: </label>
-                <input type="text" id="nazwisko" name="nazwisko" required><br><br>
-
-                <input type="submit" value="Dodaj Kursanta" class="btn">
-            </form>
-        </main>
-    </div>
-</body>
-</html>
+            <section class="registration-form">
+                <h2>
