@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Sprawdzenie czy użytkownik to admin
+if (!isset($_SESSION['user']) || $_SESSION['user'] !== 'admin') {
+    echo "<h2 style='color:red; text-align:center;'>Dostęp zabroniony</h2>";
+    exit;
+}
+
 include 'db_connect.php'; // Połączenie z bazą
 
 // Pobieranie danych z tabeli Lekcje Teoretyczne
@@ -62,6 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['kursant_id']) && isset
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <meta charset="UTF-8">
     <title>Panel Administratora</title>
     <link rel="stylesheet" href="style.css">
@@ -118,7 +128,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['kursant_id']) && isset
                                         <input type="hidden" name="kursant_id" value="<?= $kursant['ID_Kursanta'] ?>">
                                         <select name="instruktor_id_kursant" required>
                                             <?php 
-                                                // Wykonaj zapytanie po raz kolejny, aby uzyskać dane instruktorów
                                                 $instruktorzyStmt = $pdo->query("SELECT * FROM Instruktorzy");
                                                 while ($instr = $instruktorzyStmt->fetch(PDO::FETCH_ASSOC)): 
                                             ?>
@@ -131,7 +140,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['kursant_id']) && isset
                                     </form>
                                 </td>
                                 <td>
-                                    <!-- Link usuwania kursanta -->
                                     <a href="?delete_id=<?= $kursant['ID_Kursanta'] ?>" class="btn delete-btn">Usuń</a>
                                 </td>
                             </tr>
@@ -159,7 +167,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['kursant_id']) && isset
                         <label for="instruktor_id">Wybierz Instruktora:</label>
                         <select name="instruktor_id" id="instruktor_id" required>
                             <?php 
-                                // Ponownie wykonaj zapytanie o instruktorów
                                 $instruktorzyStmt = $pdo->query("SELECT * FROM Instruktorzy");
                                 while ($instr = $instruktorzyStmt->fetch(PDO::FETCH_ASSOC)): 
                             ?>

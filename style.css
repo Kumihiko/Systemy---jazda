@@ -123,12 +123,9 @@ button.btn {
 /* Tabela */
 table.table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    display: block;
+    white-space: nowrap;
 }
 
     table.table thead {
@@ -155,4 +152,53 @@ footer {
     margin-top: 40px;
     border-radius: 10px;
     font-size: 0.9em;
+}
+
+/* Styl domyślny już masz — teraz responsywność */
+
+/* Telefony (maks. 768px) */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    header, footer {
+        text-align: center;
+    }
+
+    header .logo {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    header .logo h1 {
+        font-size: 20px;
+    }
+
+    nav {
+        margin-top: 10px;
+    }
+
+    .table {
+        font-size: 12px;
+        overflow-x: auto;
+        display: block;
+    }
+
+    .form-box,
+    .login-box {
+        width: 100%;
+        padding: 20px;
+        margin: 20px 0;
+    }
+
+    .form-group input,
+    .form-group select {
+        font-size: 14px;
+    }
+
+    .btn {
+        padding: 10px;
+        font-size: 14px;
+    }
 }
